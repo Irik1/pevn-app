@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const options={
     host: 'localhost',
-    password: "Naruto007",
+    password: "12345",
     dialect: 'postgres',
     port: 5432,
     dialectOptions: {
@@ -12,7 +12,7 @@ const options={
         timestamps: false
     }
 }
-global.db = new Sequelize("job", "postgres", "Naruto007", options);
+global.db = new Sequelize("job", "postgres", "12345", options);
 
 module.exports = async function() {
 
