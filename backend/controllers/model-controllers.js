@@ -20,16 +20,21 @@ join  "lesson_students" on "lesson_students"."lesson_id" = "lessons"."id"
 join  "lesson_teachers" on "lesson_teachers"."lesson_id" = "lessons"."id"
 join "students" on "lesson_students"."student_id" = "students"."id"
 join "teachers" on "lesson_teachers"."teacher_id" = "teachers"."id"`;
+        // для конструирования запроса, чтобы не возникли лишние where, будем проверять, присутствуют ли еще какие фильтры до этого
+        let where = `where`;
         //Организовываем фильтр
         // добавляем дату. Если она не в формате гггг-мм-дд - вызываем исключение. Если дата нормальная - добавляем ее в запрос
-        const date = request.body.date.split(',');
+        let date;
+        if (request.body.date)
+            date = request.body.date.split(',');
         if (date){
             if (!date[0].match('(19|20)[0-9]{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])'))
             throw "Введен некорректный формат даты";
-        else (
-            date[1] === undefined ? query += `where "lessons"."date" = '${date[0]}'\n`
-            : query += `where "lessons"."date" between '${date[0]}' and '${date[1]}'\n`
-        )
+             else {
+                date[1] === undefined ? query += where + ` "lessons"."date" = '${date[0]}'\n`
+                : query += where + ` "lessons"."date" between '${date[0]}' and '${date[1]}'\n`;
+                where = "and";
+        }
         }
         // добавляем статус, если его значение равно 0 или 1
         const status = request.body.status;
@@ -37,13 +42,15 @@ join "teachers" on "lesson_teachers"."teacher_id" = "teachers"."id"`;
         {
             if (status != 0 && status != 1)
                 throw "Введен некорректный статус";
-            query += `and "lessons"."status" = ${status}\n`
+            query += where + ` "lessons"."status" = ${status}\n`
+            where = "and";
         }
         // добавляем список учителей
         const teachers = request.body.teachersIds;
         if (teachers)
         {
-            query += `and "lesson_teachers"."teacher_id" in (${teachers})\n`
+            query += where + ` "lesson_teachers"."teacher_id" in (${teachers})\n`;
+            where = "and";
         }
         // основная часть запроса завершена, дальше идут отступы и ограничения количества вывода
         query += `group by "lessons"."id") as lessonsGroup\n`
@@ -67,8 +74,7 @@ join "teachers" on "lesson_teachers"."teacher_id" = "teachers"."id"`;
     }
     catch (err){
         // в случае ошибок возвращаем код 400
-        console.log(err);
-        result.sendStatus(400).send(err);
+        result.status(400).send("Возникла следующая ошибка -> " + err);
     }
 };
 
@@ -154,8 +160,7 @@ exports.createLessons = async (request, result) =>{
     catch (err){
         // в случае ошибок откатываем транзакцию и возвращаем на фронтенд код ошибки и ее текст
         await t.rollback();
-        console.log(err);
-        result.sendStatus(400).send(err);
+        result.status(400).send("Возникла следующая ошибка -> " + err);
     }
 });
 }

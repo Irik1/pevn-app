@@ -4,19 +4,19 @@
       Тестирование вывода данных
     </p>
     <input type="button" @click="testSelect1()" value="Тест1">
-    <input type="button" @click="testSelect1()" value="Тест2">
-    <input type="button" @click="testSelect1()" value="Тест3">
-    <input type="button" @click="testSelect1()" value="Тест4">
-    <input type="button" @click="testSelect1()" value="Тест5">
+    <input type="button" @click="testSelect2()" value="Тест2">
+    <input type="button" @click="testSelect3()" value="Тест3">
+    <input type="button" @click="testSelect4()" value="Тест4">
+    <input type="button" @click="testSelect5()" value="Тест5">
 
     <p>
       Тестирование добавления данных
     </p>
    <input type="button" @click="testAppend1()" value="Тест1">
-   <input type="button" @click="testAppend1()" value="Тест2">
-   <input type="button" @click="testAppend1()" value="Тест3">
-   <input type="button" @click="testAppend1()" value="Тест4">
-   <input type="button" @click="testAppend1()" value="Тест5">
+   <input type="button" @click="testAppend2()" value="Тест2">
+   <input type="button" @click="testAppend3()" value="Тест3">
+   <input type="button" @click="testAppend4()" value="Тест4">
+   <input type="button" @click="testAppend5()" value="Тест5">
   </div>
 </template>
 
@@ -27,8 +27,9 @@ export default {
 
   methods: {
      async testSelect1() {
+        // тест со значениями из условия
         let data = {
-            date: '2019-01-01,2019-09-01',
+            date: '2019-09-01',
             status: 1,
             teachersIds: '1,2',
             studentCount: '3',
@@ -38,56 +39,48 @@ export default {
         const response = await axios.post('/api/',data);
         console.log(response);
      },
+      // тест с пустыми значениями
           async testSelect2() {
-        let data = {
-            date: '2019-01-01,2019-09-01',
-            status: 1,
-            teachersIds: '1,2',
-            studentCount: '3',
-            page : 1,
-            lessonsPerPage: 5
+          let data = {
           };
         const response = await axios.post('/api/',data);
         console.log(response);
      },
+     // тест с промежутком дат на второй странице
           async testSelect3() {
         let data = {
             date: '2019-01-01,2019-09-01',
-            status: 1,
-            teachersIds: '1,2',
-            studentCount: '3',
-            page : 1,
-            lessonsPerPage: 5
+            teachersIds: '3',
+            page : 2,
+            lessonsPerPage: 4
           };
         const response = await axios.post('/api/',data);
         console.log(response);
      },
           async testSelect4() {
+            // тест с некорректными значениями
         let data = {
-            date: '2019-01-01,2019-09-01',
-            status: 1,
-            teachersIds: '1,2',
-            studentCount: '3',
-            page : 1,
-            lessonsPerPage: 5
+            date: 'abcd,efds',
+            status: "test",
+            teachersIds: 'test',
+            studentCount: 'test',
+            page : "test",
+            lessonsPerPage: "test"
           };
         const response = await axios.post('/api/',data);
         console.log(response);
      },
+     // тест с некоторыми из полей
           async testSelect5() {
         let data = {
-            date: '2019-01-01,2019-09-01',
-            status: 1,
             teachersIds: '1,2',
             studentCount: '3',
-            page : 1,
-            lessonsPerPage: 5
           };
         const response = await axios.post('/api/',data);
         console.log(response);
      },
      async testAppend1() {
-        console.log("Yay!");
+        // тест с данными из задания
         let data ={
           teachersIds:[1,2],
           title: 'Blue Ocean',
@@ -100,53 +93,45 @@ export default {
         console.log(response);
      },
           async testAppend2() {
-        console.log("Yay!");
+        // тест без данных
         let data ={
-          teachersIds:[1,2],
-          title: 'Blue Ocean',
-          days: [0,1,3,6],
-          firstDate: '2019-09-10',
-          lessonsCount: 9,
-          lastDate: '2019-12-31'
         }
         const response = await axios.post('/api/lessons',data);
         console.log(response);
      },
           async testAppend3() {
-        console.log("Yay!");
+        // тест со слишком большим промежутком времени - создастся только 300 записей
         let data ={
-          teachersIds:[1,2],
+          teachersIds:[1,2,3,4],
           title: 'Blue Ocean',
-          days: [0,1,3,6],
+          days: [0,1,2,3,4,5,6],
           firstDate: '2019-09-10',
-          lessonsCount: 9,
-          lastDate: '2019-12-31'
+          lastDate: '2022-12-31'
         }
         const response = await axios.post('/api/lessons',data);
         console.log(response);
      },
           async testAppend4() {
-        console.log("Yay!");
+        // тест с заведомо некорректными значениями
         let data ={
-          teachersIds:[1,2],
-          title: 'Blue Ocean',
-          days: [0,1,3,6],
+          teachersIds:[55],
+          days: [7,2,33],
           firstDate: '2019-09-10',
-          lessonsCount: 9,
-          lastDate: '2019-12-31'
+          lessonsCount: 333,
+          lastDate: '2012-12-31'
         }
         const response = await axios.post('/api/lessons',data);
         console.log(response);
      },
+
           async testAppend5() {
-        console.log("Yay!");
+        // тест с валидными данными
         let data ={
-          teachersIds:[1,2],
-          title: 'Blue Ocean',
-          days: [0,1,3,6],
+          teachersIds:[1,3,4],
+          title: 'Какое-то там название',
+          days: [0,6],
           firstDate: '2019-09-10',
-          lessonsCount: 9,
-          lastDate: '2019-12-31'
+          lessonsCount: 40,
         }
         const response = await axios.post('/api/lessons',data);
         console.log(response);

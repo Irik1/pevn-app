@@ -1,9 +1,7 @@
 const express = require('express');
-// const bodyParser = require('body-parser');
 
 const connectDb = require('./db/connect-db');
 const path = require('path');
-// require('./db');
 
 const modelRoute = require('./routes/model-rotes');
 
