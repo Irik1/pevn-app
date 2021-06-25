@@ -1,19 +1,19 @@
-# pevn-app
+# Тестовое задание
 
-## Project setup
+Проект представляет собой веб-приложение. На фронтенде формируются наборы тестовых данных и осуществляются запросы на бекенд.
+На бекенде присутствует 2 метода - вывод списка занятий с введенными фильтрами, а также добавление новых записей.
+
+## При установке проекта
 ```
 yarn install
 ```
 
-### Compiles and hot-reloads for development
+### Чтобы подгрузить фротенд на сайт
 ```
-yarn serve
-```
-
-### Compiles and minifies for production
-```
-yarn build
+npm run build
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### Чтобы запустить проект
+```
+npm run server
+```
