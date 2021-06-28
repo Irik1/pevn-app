@@ -28,38 +28,38 @@ export default {
   methods: {
      async testSelect1() {
         // тест со значениями из условия
-        let data = {
-            date: '2019-09-01',
-            status: 1,
-            teachersIds: '1,2',
+        const params = {
+            // date: '2019-01-01',
+            status: 0,
+            teachersIds: '1,2,3,4,5',
             studentCount: '3',
             page : 1,
             lessonsPerPage: 5
           };
-        const response = await axios.post('/api/',data);
+        const response = await axios.get('/api/', {params});
         console.log(response);
      },
       // тест с пустыми значениями
           async testSelect2() {
-          let data = {
+          const params = {
           };
-        const response = await axios.post('/api/',data);
+        const response = await axios.get('/api/', {params});
         console.log(response);
      },
      // тест с промежутком дат на второй странице
           async testSelect3() {
-        let data = {
+        const params = {
             date: '2019-01-01,2019-09-01',
             teachersIds: '3',
             page : 2,
             lessonsPerPage: 4
           };
-        const response = await axios.post('/api/',data);
+        const response = await axios.get('/api/', {params});
         console.log(response);
      },
           async testSelect4() {
             // тест с некорректными значениями
-        let data = {
+        const params = {
             date: 'abcd,efds',
             status: "test",
             teachersIds: 'test',
@@ -67,16 +67,16 @@ export default {
             page : "test",
             lessonsPerPage: "test"
           };
-        const response = await axios.post('/api/',data);
+        const response = await axios.get('/api/', {params});
         console.log(response);
      },
      // тест с некоторыми из полей
           async testSelect5() {
-        let data = {
+          const params = {
             teachersIds: '1,2',
             studentCount: '3',
           };
-        const response = await axios.post('/api/',data);
+        const response = await axios.get('/api/', {params});
         console.log(response);
      },
      async testAppend1() {
