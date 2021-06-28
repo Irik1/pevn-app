@@ -82,12 +82,11 @@ export default {
      async testAppend1() {
         // тест с данными из задания
         let data ={
-          teachersIds:[1,2],
-          title: 'Blue Ocean',
-          days: [0,1,3,6],
-          firstDate: '2019-09-10',
-          lessonsCount: 9,
-          lastDate: '2019-12-31'
+          "teacherIds": [1,4],
+          "title": "Blue Ocean",
+          "days": [0,1,3,6],
+          "firstDate": "2021-01-01",
+          "lastDate": "2021-09-01"
         }
         const response = await axios.post('/api/lessons',data);
         console.log(response);
@@ -102,11 +101,11 @@ export default {
           async testAppend3() {
         // тест со слишком большим промежутком времени - создастся только 300 записей
         let data ={
-          teachersIds:[1,2,3,4],
-          title: 'Blue Ocean',
-          days: [0,1,2,3,4,5,6],
-          firstDate: '2019-09-10',
-          lastDate: '2022-12-31'
+          "teacherId": [1,4],
+          "title": "Blue Ocean",
+          "days": [1],
+          "firstDate": "2021-04-01",
+          "lastDate": "2000-01-01"
         }
         const response = await axios.post('/api/lessons',data);
         console.log(response);
@@ -114,7 +113,7 @@ export default {
           async testAppend4() {
         // тест с заведомо некорректными значениями
         let data ={
-          teachersIds:[55],
+          teacherIds:[55],
           days: [7,2,33],
           firstDate: '2019-09-10',
           lessonsCount: 333,

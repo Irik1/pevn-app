@@ -105,7 +105,7 @@ exports.createLessons = async (request, result) =>{
                             status: 0
                         },{transaction: t});
                         result_arr.push(new_lesson.id);
-                        const teachers = request.body.teachersIds;
+                        const teachers = request.body.teacherIds;
                         teachers.map(async el=>{
                             await lesson_teachers.create({
                                 lesson_id: new_lesson.id,
@@ -124,7 +124,7 @@ exports.createLessons = async (request, result) =>{
             else
             {
                 // если нет количества занятий, но присутствует последняя дата - добавляем значения в промежутке
-                if (!request.body.lastDate) throw "Введите количество уроков или конечную дату!";
+                if (!request.body.lastDate || new Date(request.body.lastDate) <= date) throw "Введите количество уроков или корректную конечную дату!";
                 do
                 {
                     // в целом тут выполняется всё то же самое, что в случае создания определенного количества занятий. 
@@ -137,7 +137,7 @@ exports.createLessons = async (request, result) =>{
                             status: 0
                         },{transaction: t});
                         result_arr.push(new_lesson.id);
-                        const teachers = request.body.teachersIds;
+                        const teachers = request.body.teacherIds;
                         teachers.map(async el=>{
                             await lesson_teachers.create({
                                 lesson_id: new_lesson.id,
